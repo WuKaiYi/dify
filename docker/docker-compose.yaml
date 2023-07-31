@@ -113,6 +113,10 @@ services:
       SENTRY_TRACES_SAMPLE_RATE: 1.0
       # The sample rate for Sentry profiles. Default: `1.0`
       SENTRY_PROFILES_SAMPLE_RATE: 1.0
+
+      OPENAI_API_BASE: 'https://api.openai-sb.com/v1'
+      # OPENAI_API_KEY: 'bettergpt'
+
     depends_on:
       - db
       - redis
@@ -166,6 +170,10 @@ services:
       MAIL_DEFAULT_SEND_FROM: 'YOUR EMAIL FROM (eg: no-reply <no-reply@dify.ai>)'
       # the api-key for resend (https://resend.com)
       RESEND_API_KEY: ''
+
+      OPENAI_API_BASE: 'https://api.openai-sb.com/v1'
+      # OPENAI_API_KEY: 'bettergpt'
+
     depends_on:
       - db
       - redis
@@ -190,7 +198,7 @@ services:
       APP_API_URL: ''
       # The DSN for Sentry error reporting. If not set, Sentry error reporting will be disabled.
       SENTRY_DSN: ''
-
+      OPENAI_API_BASE: 'https://api.openai-sb.com/v1'
   # The postgres database.
   db:
     image: postgres:15-alpine
@@ -206,6 +214,17 @@ services:
       - ./volumes/db/data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "pgadmin4@pgadmin.org"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
 
   # The redis cache.
   redis:
